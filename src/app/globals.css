@@ -4,22 +4,24 @@
   /* Link Next.js Font Variables */
   --font-sans: var(--font-outfit);
   --font-display: var(--font-space);
+  
+  /* --- EXACT RESPONSIVE PADDING & BOUNDARIES FROM INDEX.HTML --- */
+  --pad: clamp(1.25rem, 5vw, 4rem);
+  --max-width: 1200px;
 }
 
 @theme {
-  /* --- CORE COLORS --- */
+  /* --- KEEPING YOUR EXACT CYAN COLORS UNTOUCHED --- */
   --color-background: #020617; /* Deep Slate 950 */
   --color-foreground: #f8fafc; /* Slate 50 */
   --color-primary: #06b6d4;    /* Cyan 500 */
   --color-accent: #22d3ee;     /* Cyan 400 */
 
   /* --- MUTED PALETTE --- */
-  /* Used for secondary text, descriptions, and "deconstructed" feel */
   --color-muted: #94a3b8;           /* Slate 400 */
-  --color-muted-foreground: #64748b; /* Slate 500 (lower contrast) */
+  --color-muted-foreground: #64748b; /* Slate 500 */
   
   /* --- SURFACE & BORDERS --- */
-  /* Used for the "surface gradient" and subtle lines */
   --color-border: rgba(255, 255, 255, 0.1); 
   --color-surface: #0f172a;        /* Slate 900 */
 
@@ -44,17 +46,14 @@
   /* --- TYPOGRAPHY --- */
   --font-sans: var(--font-sans), ui-sans-serif, system-ui;
   --font-display: var(--font-display), sans-serif;
-
-  --background-image-text-gradient: linear-gradient(
-    to right, 
-    #06b6d4, 
-    #22d3ee, 
-    #f8fafc
-  );
 }
 
 /* --- BASE STYLES --- */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-background);
     background-image: var(--background-image-main-gradient);
@@ -64,8 +63,32 @@
     @apply antialiased;
   }
 
+  /* Core background grid overlay layout skins */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(167,139,250,0.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 30%, rgba(245,208,169,0.04), transparent 60%),
+      linear-gradient(transparent 0 31px, rgba(255,255,255,0.018) 31px 32px) 0 0/32px 32px,
+      linear-gradient(90deg, transparent 0 31px, rgba(255,255,255,0.018) 31px 32px) 0 0/32px 32px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 80%);
+  }
+  
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .35; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     @apply tracking-tight;
   }
+}
+
+@utility text-gradient {
+  background: linear-gradient(180deg, var(--color-foreground) 30%, var(--color-muted) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }

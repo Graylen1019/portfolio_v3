@@ -1,42 +1,58 @@
-import { BsLinkedin, BsGithub } from "react-icons/bs"
-import Link from "next/link"
+"use client"
+
+import React, { useState, useEffect } from "react"
 
 export const Navbar = () => {
-    return (
-        <nav className="fixed top-8 left-1/2 -translate-x-1/2 w-[90%] max-w-300 z-50">
-            <div className="bg-surface-gradient backdrop-blur-md border border-white/10 px-16 py-4 rounded-full flex justify-between items-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+  const [isScrolled, setIsScrolled] = useState(false)
 
-                {/* Logo with Space Grotesk */}
-                <div className="font-display font-bold text-xl bg-text-gradient bg-clip-text text-transparent tracking-tight cursor-pointer hover:opacity-80 transition-opacity">
-                    G.Bigelow
-                </div>
-                <div className="flex items-center space-x-6">
-                    <div>
-                        <ul className="flex gap-6 text-sm font-medium font-sans text-muted-foreground/80">
-                            <li><a href="#" className="hover:text-primary transition-colors">Home</a></li>
-                            <li><a href="#about" className="hover:text-primary transition-colors duration-500">About</a></li>
-                            <li><a href="#experience" className="hover:text-primary transition-colors duration-500">Experience</a></li>
-                            <li><a href="#projects" className="hover:text-primary transition-colors duration-500">Projects</a></li>
-                            <li><a href="#contact" className="hover:text-primary transition-colors duration-500 text-muted font-bold">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div className="h-4 w-0.5 bg-muted-foreground" />
-                    <div>
-                        <ul className="flex gap-6">
-                            <li>
-                                <BsLinkedin size={16} color="#64748b" />
-                            </li>
-                            <li>
-                                <BsGithub size={16} color="#64748b" />
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="h-4 w-0.5 bg-muted-foreground" />
-                    <div>
-                        <Link className="bg-muted-foreground rounded-3xl p-2 text-muted" href={"/contact"}>Hire Me</Link>        
-                    </div>
-                </div>
-            </div>
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  return (
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "border-b border-border bg-background/80 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
+      {/* This wrapper is the direct fix. 
+        px-[var(--pad)] grabs your original fluid padding from globals.css.
+        max-w-[1200px] mx-auto forces the navbar layout to snap right into line with the sections below.
+      */}
+      <div className="w-full max-w-300 mx-auto px-(--pad) flex items-center justify-between h-20">
+        
+        {/* Brand Identity */}
+        <a href="#top" className="flex items-center gap-2.5 font-mono text-[13px] tracking-wide text-foreground">
+          <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+          Graylen Bigelow / Frontend Developer
+        </a>
+
+        {/* Center Anchored Links */}
+        <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-muted">
+          <a href="#about" className="hover:text-foreground transition-colors">01 About</a>
+          <a href="#experience" className="hover:text-foreground transition-colors">02 Work</a>
+          <a href="#stack" className="hover:text-foreground transition-colors">03 Stack</a>
+          <a href="#projects" className="hover:text-foreground transition-colors">04 Projects</a>
         </nav>
-    )
+
+        {/* Contact CTA */}
+        <a 
+          href="mailto:graylen@example.com" 
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-xs font-medium transition-transform hover:-translate-y-0.5"
+        >
+          {/* Scalable Vector Graphics matching original email envelope badge profile asset */}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          Get in touch
+        </a>
+
+      </div>
+    </header>
+  )
 }
