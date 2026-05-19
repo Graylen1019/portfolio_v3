@@ -4,21 +4,23 @@ export const Hero = () => {
   return (
     <section className="relative min-h-screen grid grid-cols-1 gap-12 pt-35 pb-20 border-b border-(--line) items-center content-center">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)] gap-12 lg:gap-16 items-end">
-        
+
         {/* LEFT COLUMN: HERO INTRO & TYPOGRAPHY */}
         <div>
           {/* Availability Status Badge */}
           <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[rgba(134,239,172,0.06)] border border-[rgba(134,239,172,0.18)] font-mono text-xs text-[#bbf7d0] mb-8">
             <span className="relative flex h-2 w-2 rounded-full bg-(--good)">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--good) opacity-75 duration-2000" />
+              <div className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-100 duration-2000 bg-primary" />
             </span>
-            Available for select frontend work · 2026
+            <h1>
+              Available for select frontend work · 2026
+            </h1>
           </div>
 
           {/* Big Typography Header Name Space */}
           <h1 className="text-[clamp(56px,9vw,132px)] font-medium leading-[0.92] tracking-tighter mb-7 select-none text-(--text) text-gradient">
-            Graylen <span className="font-serif italic font-normal tracking-tight text-(--accent)">Bigelow</span>
-            <span className="block mt-1">~ builds<br />the <span className="font-serif italic font-normal tracking-tight text-(--accent)">web.</span></span>
+            Graylen <span className="font-serif italic font-normal tracking-tight text-gradient">Bigelow</span>
+            <span className="block mt-1">~ builds<br />the <span className="font-serif italic font-normal tracking-tight text-gradient">web.</span></span>
           </h1>
 
           {/* Led Summary with your text gradient effect hook built right in */}
@@ -41,7 +43,7 @@ export const Hero = () => {
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </a>
-            
+
             <a
               href="https://github.com"
               target="_blank"
@@ -70,12 +72,12 @@ export const Hero = () => {
 
         {/* RIGHT COLUMN: SIDE METRIC CARDS */}
         <aside className="flex flex-col gap-4 w-full max-w-sm lg:max-w-none justify-self-stretch">
-          
+
           {/* Card 1: Live GitHub Aggregates */}
           <div className="border border-(--line) rounded-[14px] bg-linear-to-b from-(--surface) to-(--bg-2) p-5.5 relative overflow-hidden">
             <div className="absolute top-3.5 right-3.5 font-mono text-[10px] text-(--dim) tracking-wider">/01</div>
             <h3 className="margin-0 mb-3.5 font-mono text-xs font-medium text-(--muted) tracking-widest uppercase">GitHub · live</h3>
-            
+
             <div className="flex justify-between items-baseline py-2.5 border-t border-dashed border-(--line)">
               <div className="text-sm text-(--muted) flex items-center gap-2">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 opacity-70"><path d="M3 4h6l2 2h10v12a2 2 0 01-2 2H3z" /></svg>
@@ -110,7 +112,7 @@ export const Hero = () => {
           <div className="border border-(--line) rounded-[14px] bg-linear-to-b from-(--surface) to-(--bg-2) p-5.5 relative overflow-hidden">
             <div className="absolute top-3.5 right-3.5 font-mono text-[10px] text-(--dim) tracking-wider">/02</div>
             <h3 className="margin-0 mb-3.5 font-mono text-xs font-medium text-(--muted) tracking-widest uppercase">Currently</h3>
-            
+
             <div className="flex flex-col gap-0 font-sans text-sm">
               <div className="flex justify-between items-center py-2.5 border-t border-dashed border-(--line) first:border-none first:pt-0">
                 <span className="text-(--muted) font-mono text-[11px] tracking-widest uppercase">Role</span>

@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
+import Link from "next/link"
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -26,22 +27,22 @@ export const Navbar = () => {
       <div className="w-full max-w-300 mx-auto px-(--pad) flex items-center justify-between h-20">
         
         {/* Brand Identity */}
-        <a href="#top" className="flex items-center gap-2.5 font-mono text-[13px] tracking-wide text-foreground">
+        <Link href="/" className="flex items-center gap-2.5 font-mono text-[13px] tracking-wide text-foreground">
           <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
           Graylen Bigelow / Frontend Developer
-        </a>
+        </Link>
 
         {/* Center Anchored Links */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-muted">
-          <a href="#about" className="hover:text-foreground transition-colors">01 About</a>
-          <a href="#experience" className="hover:text-foreground transition-colors">02 Work</a>
-          <a href="#stack" className="hover:text-foreground transition-colors">03 Stack</a>
-          <a href="#projects" className="hover:text-foreground transition-colors">04 Projects</a>
+          <Link href="/about" className="hover:text-foreground transition-colors">01 About</Link>
+          <Link href="/experience" className="hover:text-foreground transition-colors">02 Work</Link>
+          <Link href="/stack" className="hover:text-foreground transition-colors">03 Stack</Link>
+          <Link href="/projects" className="hover:text-foreground transition-colors">04 Projects</Link>
         </nav>
 
         {/* Contact CTA */}
-        <a 
-          href="mailto:graylen@example.com" 
+        <Link
+          href="/contact" 
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-xs font-medium transition-transform hover:-translate-y-0.5"
         >
           {/* Scalable Vector Graphics matching original email envelope badge profile asset */}
@@ -50,7 +51,7 @@ export const Navbar = () => {
             <polyline points="22,6 12,13 2,6"/>
           </svg>
           Get in touch
-        </a>
+        </Link>
 
       </div>
     </header>
