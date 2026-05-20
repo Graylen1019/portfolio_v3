@@ -85,10 +85,33 @@
   }
 }
 
-@utility text-gradient {
+.text-gradient {
   background: linear-gradient(200deg, var(--color-foreground) 30%, var(--color-muted) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   display: inline-block;
+}
+
+.bg-main-gradient {
+  background-image: var(--background-image-main-gradient);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bg-surface-gradient {
+  background-image: var(--background-image-surface-gradient);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@keyframes scroll-cue {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(36px);
+    opacity: 1;
+  }
 }
