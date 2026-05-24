@@ -7,7 +7,7 @@ export const Footer = () => {
         - py-8 adds vertical breathing room above and below the text lines.
         - px-[var(--pad)] aligns the margins perfectly with your upper blocks.
       */}
-      <div className="w-full max-w-[1200px] mx-auto px-[var(--pad)] py-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-muted">
+      <div className="w-full mx-auto px-(--pad) py-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-muted">
         
         {/* Left Side Ownership Branding */}
         <div>

@@ -16,15 +16,15 @@ export const Navbar = () => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "border-b border-border bg-background/80 backdrop-blur-md" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-border bg-background/80 ${
+        isScrolled ? "backdrop-blur-md" : "bg-transparent"
       }`}
     >
       {/* This wrapper is the direct fix. 
         px-[var(--pad)] grabs your original fluid padding from globals.css.
         max-w-[1200px] mx-auto forces the navbar layout to snap right into line with the sections below.
       */}
-      <div className="w-full max-w-300 mx-auto px-(--pad) flex items-center justify-between h-20">
+      <div className="w-full mx-auto px-(--pad) flex items-center justify-between h-20">
         
         {/* Brand Identity */}
         <Link href="/" className="flex items-center gap-2.5 font-mono text-[13px] tracking-wide text-foreground">
