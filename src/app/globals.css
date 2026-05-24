@@ -8,6 +8,20 @@
   /* --- EXACT RESPONSIVE PADDING & BOUNDARIES FROM INDEX.HTML --- */
   --pad: clamp(1.25rem, 5vw, 4rem);
   --max-width: 1200px;
+
+  /* --- Project and theme aliases --- */
+  --bg: var(--color-background);
+  --bg-2: #111827;
+  --surface: var(--color-surface);
+  --surface-2: #111827;
+  --text: var(--color-foreground);
+  --muted: var(--color-muted);
+  --dim: var(--color-muted-foreground);
+  --line: var(--color-border);
+  --accent: var(--color-accent);
+  --accent-2: #7dd3fc;
+  --brand-color: var(--color-primary);
+  --line-2: #475569;
 }
 
 @theme {
