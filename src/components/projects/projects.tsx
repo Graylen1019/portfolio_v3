@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 type Project = {
@@ -98,7 +99,9 @@ export const Projects = () => {
           {projects.map((proj, idx) => {
             const isSelected = idx === activeIndex;
             return (
-              <button
+              <Link
+                href={"/projects/" + proj.title.toLowerCase().replace(/\s+/g, "-")}
+
                 key={idx}
                 onMouseEnter={() => setActiveIndex(idx)}
                 onClick={() => setActiveIndex(idx)}
@@ -119,7 +122,7 @@ export const Projects = () => {
                 <div className="text-[12.5px] text-(--muted) leading-normal line-clamp-2">
                   {proj.desc}
                 </div>
-              </button>
+              </Link>
             );
           })}
         </div>
