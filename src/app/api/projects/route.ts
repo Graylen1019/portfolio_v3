@@ -31,12 +31,11 @@ export async function GET() {
     
     // Exact repository sequence array (Deterministic ordering)
     const allowedProjects = [
-      "portfolio_v3",
-      "NewTube-project",
-      "react-django-todo-list",
-      "Skinstric-intern",
-      "Google-docs",
-      "Movie-API",
+      "My-Portfolio",
+      "NewTube",
+      "skinstric.ai",
+      "solid-docs",
+      "OMDB-movie-api",
     ];
 
     const url = `https://api.github.com/users/${username}/repos?per_page=100`;

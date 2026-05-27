@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio v3
 
-## Getting Started
+A modern personal portfolio site built with Next.js (App Router). This repository contains a fast, accessible, and component-driven portfolio used to showcase projects, work history, technical stack, and contact information. It's designed for easy deployment to Vercel and local development with npm/yarn/pnpm.
 
-First, run the development server:
+## Quick Start
+
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Built With
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js (App Router)
+- TypeScript
+- Node.js
+- Vercel (recommended for deployment)
 
-## Learn More
+## What’s in this repo
 
-To learn more about Next.js, take a look at the following resources:
+Top-level structure highlights:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/` - Main Next.js App Router; pages, layouts and route handlers.
+	- `src/app/page.tsx` - Site homepage.
+	- `src/app/layout.tsx` - Root layout and global styles.
+	- `src/app/(routes)/projects/[project.name]/page.tsx` - Dynamic project pages.
+- `src/components/` - Reusable UI components: `hero`, `nav`, `projects`, `works`, `stack`, `contact`, `footer`.
+- `src/app/api/` - Server route handlers.
+	- `src/app/api/github/route.ts` - (client) fetches GitHub data used in the UI.
+	- `src/app/api/projects/route.ts` - API that serves the portfolio's project list.
+- `public/projects/` - Static project assets used by the portfolio.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See the code for specific implementations in the `src` folder.
 
-## Deploy on Vercel
+## Project Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Component-driven React UI with clear folder separation.
+- Dynamic routed project pages using Next.js App Router.
+- Simple serverless API routes for projects and GitHub data.
+- CSS scoped via `globals.css` in `src/app`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Endpoints
+
+- `GET /api/projects` — returns the projects metadata consumed by the Projects page.
+- `GET /api/github` — returns GitHub-related data (stars, repos, etc.) used in the hero or social sections.
+
+Refer to `src/app/api` for implementation details.
+
+## Development notes
+
+- Edit the UI pages inside `src/app` and components in `src/components`.
+- Project data can be added as JSON or MD files under `public/projects/` or inside the API route that reads project metadata.
+
+## Deployment
+
+This project is ready for Vercel — push the repo to GitHub and import it into Vercel, or run the following build locally:
+
+```bash
+npm run build
+npm start
+```
+
+## Contributing
+
+Contributions are welcome. Open issues or PRs for fixes, accessibility improvements, or content updates.
+
+

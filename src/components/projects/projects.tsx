@@ -155,13 +155,13 @@ export const Projects = () => {
                     : "opacity-0 scale-[0.98] z-0 invisible pointer-events-none"
                 }`}
               >
-                <div className="w-full h-full rounded-lg border-3 border-dashed bg-transparent flex items-center justify-center font-serif italic text-[72px] text-white/5 tracking-tighter shadow-2xl border-(--line)">
+                <div className="w-full max-w-130 h-full rounded-lg border-3 border-dashed bg-transparent flex items-center justify-center font-serif italic text-[72px] text-white/5 tracking-tighter shadow-2xl border-(--line)">
                   <Image
                     src={proj.image}
                     alt={proj.initials}
                     width={1669}
                     height={957}
-                    className="w-full h-full rounded-lg object-cover"
+                    className="w-full h-full rounded-lg object-fill"
                   />
                 </div>
               </div>
