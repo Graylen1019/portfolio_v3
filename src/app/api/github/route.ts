@@ -5,37 +5,6 @@ export const revalidate = 3600;
 const GITHUB_USERNAME = "Graylen1019";
 const TOKEN = process.env.GITHUB_TOKEN;
 
-const combinedQuery = `
-  query($login: String!) {
-    user(login: $login) {
-      repositories(ownerAffiliations: OWNER, isFork: false) {
-        totalCount
-      }
-      contributionsCollection {
-        totalCommitContributions
-      }
-      recentRepos: repositories(
-        ownerAffiliations: OWNER,
-        isFork: false,
-        first: 20,
-        orderBy: { field: UPDATED_AT, direction: DESC }
-      ) {
-        nodes {
-          name
-          url
-          isPrivate
-          description
-          languages(first: 1, orderBy: { field: SIZE, direction: DESC }) {
-            edges {
-              node { name }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 export async function GET() {
   if (!TOKEN) {
     return NextResponse.json(
@@ -45,23 +14,106 @@ export async function GET() {
   }
 
   try {
-    const res = await fetch("https://api.github.com/graphql", {
+    const accountCreatedRes = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${TOKEN}`,
-        "Cache-Control": "s-maxage=3600",
       },
       body: JSON.stringify({
-        query: combinedQuery,
+        query: `query($login: String!) { user(login: $login) { createdAt } }`,
         variables: { login: GITHUB_USERNAME },
       }),
       next: { revalidate: 3600 },
     });
 
-    if (!res.ok) throw new Error(`GitHub API responded with ${res.status}`);
+    const accountJson = await accountCreatedRes.json();
+    const createdAt = new Date(accountJson.data.user.createdAt);
+    const now = new Date();
 
-    const json = await res.json();
+    const years: number[] = [];
+    for (let y = createdAt.getFullYear(); y <= now.getFullYear(); y++) {
+      years.push(y);
+    }
+
+    const commitQueries = years.map((year) => ({
+      query: `
+        query($login: String!, $from: DateTime!, $to: DateTime!) {
+          user(login: $login) {
+            contributionsCollection(from: $from, to: $to) {
+              totalCommitContributions
+            }
+          }
+        }
+      `,
+      variables: {
+        login: GITHUB_USERNAME,
+        from: `${year}-01-01T00:00:00Z`,
+        to: `${Math.min(year + 1, now.getFullYear())}-01-01T00:00:00Z`,
+      },
+    }));
+
+    const [commitResults, mainRes] = await Promise.all([
+      Promise.all(
+        commitQueries.map((body) =>
+          fetch("https://api.github.com/graphql", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${TOKEN}`,
+            },
+            body: JSON.stringify(body),
+            next: { revalidate: 3600 },
+          }).then((r) => r.json())
+        )
+      ),
+      fetch("https://api.github.com/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+          "Cache-Control": "s-maxage=3600",
+        },
+        body: JSON.stringify({
+          query: `
+            query($login: String!) {
+              user(login: $login) {
+                repositories(ownerAffiliations: OWNER, isFork: false) {
+                  totalCount
+                }
+                recentRepos: repositories(
+                  ownerAffiliations: OWNER,
+                  isFork: false,
+                  first: 20,
+                  orderBy: { field: UPDATED_AT, direction: DESC }
+                ) {
+                  nodes {
+                    name
+                    url
+                    isPrivate
+                    description
+                    languages(first: 1, orderBy: { field: SIZE, direction: DESC }) {
+                      edges {
+                        node { name }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: { login: GITHUB_USERNAME },
+        }),
+        next: { revalidate: 3600 },
+      }),
+    ]);
+
+    const totalCommits = commitResults.reduce(
+      (sum, r) => sum + (r.data?.user?.contributionsCollection?.totalCommitContributions ?? 0),
+      0
+    );
+
+    const json = await mainRes.json();
     if (json.errors) throw new Error("GraphQL errors: " + JSON.stringify(json.errors));
 
     const user = json.data?.user;
@@ -82,7 +134,7 @@ export async function GET() {
 
     return NextResponse.json({
       publicRepos: user?.repositories?.totalCount ?? 0,
-      totalCommits: user?.contributionsCollection?.totalCommitContributions ?? 0,
+      totalCommits,
       repos,
       lastUpdated: new Date().toISOString(),
     });
