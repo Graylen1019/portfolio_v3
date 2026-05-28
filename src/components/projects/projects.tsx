@@ -42,7 +42,6 @@ export const Projects = () => {
     fetchProjects();
   }, []);
 
-  // 1. Loading State Placeholder View
   if (loading) {
     return (
       <section className="py-24 border-b border-(--line) relative animate-pulse">
@@ -60,7 +59,6 @@ export const Projects = () => {
     );
   }
 
-  // 2. Error / Network Disconnection Fallback View
   if (error || projects.length === 0) {
     return (
       <div className="py-16 text-center border border-dashed border-(--line) rounded-xl">
@@ -75,7 +73,7 @@ export const Projects = () => {
 
   return (
     <section id="projects" className="py-24 border-b border-(--line) relative">
-      {/* Section Eyebrow Label Badge */}
+
       <div className="inline-flex items-center gap-2.5 font-mono text-[11px] tracking-[0.14em] uppercase text-(--muted) mb-6 before:content-[''] before:w-6 before:h-px before:bg-(--accent) before:inline-block">
         04 / Projects
       </div>
@@ -92,9 +90,8 @@ export const Projects = () => {
         instantly switch views, or click to lock into your selection.
       </p>
 
-      {/* THREE-COLUMN EXPANSIVE MASTER-DETAIL LAYOUT SYSTEM */}
       <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-stretch relative">
-        {/* LEFT COLUMN: SELECTABLE INTERACTIVE PROJECTS MENUBAR */}
+
         <div className="flex flex-col gap-2 relative z-30" id="projList" role="tablist">
           {projects.map((proj, idx) => {
             const isSelected = idx === activeIndex;
@@ -127,9 +124,8 @@ export const Projects = () => {
           })}
         </div>
 
-        {/* RIGHT COLUMN: RICH CONTEXTUAL STAGE PREVIEW VISUALIZER */}
         <div className="border border-(--line) rounded-[14px] bg-(--bg-2) overflow-hidden flex flex-col min-h-130 relative z-10">
-          {/* Virtual Browser Top Window Controls Frame (Chrome Ribbon) */}
+
           <div className="flex items-center gap-2.5 p-3 border-b border-(--line) bg-(--surface)">
             <div className="flex gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-[#2a2a32]" />
@@ -144,7 +140,6 @@ export const Projects = () => {
             </div>
           </div>
 
-          {/* Graphical Display Fallback Decorative Canvas */}
           <div className="relative flex-1 min-h-70 bg-[#0e0e12] overflow-hidden flex items-center justify-center p-6" id="prevStage">
             {projects.map((proj, idx) => (
               <div
@@ -168,7 +163,6 @@ export const Projects = () => {
             ))}
           </div>
 
-          {/* Reactive Content Card Footer Segment */}
           <div className="p-6 border-t border-(--line) bg-(--bg-2)">
             <h3 className="m-0 mb-1 text-2xl font-medium tracking-tight text-(--text) capitalize" id="pbTitle">
               {currentProject.title}
@@ -182,7 +176,6 @@ export const Projects = () => {
               {currentProject.desc}
             </p>
 
-            {/* Dynamic Render Project Tag Cluster */}
             <div className="flex flex-wrap gap-1.5 mb-4" id="pbTags">
               {currentProject.tags.map((tag, tIdx) => (
                 <span
@@ -194,7 +187,6 @@ export const Projects = () => {
               ))}
             </div>
 
-            {/* Action Anchors */}
             <div className="proj-links flex gap-2.5 pt-2">
               {currentProject.url.startsWith("http") && (
                 <a

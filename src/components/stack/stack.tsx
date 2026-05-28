@@ -113,7 +113,7 @@ export const Stack = () => {
     <section id="stack" className="py-24 border-b border-(--line) relative">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-14">
         <div>
-          {/* Section Identifier Badge */}
+
           <div className="inline-flex items-center gap-2.5 font-mono text-[11px] tracking-[0.14em] uppercase text-(--muted) mb-6 before:content-[''] before:w-6 before:h-px before:bg-(--accent) before:inline-block">
             03 / Toolkit
           </div>
@@ -128,7 +128,6 @@ export const Stack = () => {
           </p>
         </div>
 
-        {/* Interactive Filter Button */}
         <button
           onClick={() => setFilterFavs(!filterFavs)}
           className={`self-start md:self-center px-4 py-2 rounded-full border text-xs font-mono tracking-wider uppercase transition-all duration-300 ${
@@ -141,7 +140,6 @@ export const Stack = () => {
         </button>
       </div>
 
-      {/* MATRIX TABLE OF CATEGORIZED STACK CHIPS */}
       <div className="flex flex-col">
         {categories.map((cat, idx) => {
           // Filter items dynamically based on toggle state
@@ -153,12 +151,10 @@ export const Stack = () => {
               key={idx} 
               className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-4 md:gap-12 py-7 border-t border-(--line) first:border-none items-start transition-all duration-500"
             >
-              {/* Left Category Column Label */}
               <div className="font-mono text-xs tracking-[0.14em] uppercase text-(--muted) pt-1.5">
                 {cat.name}
               </div>
 
-              {/* Right Chips Wrapper List */}
               <div className="flex flex-wrap gap-2">
                 {visibleItems.map((item, key) => {
                   const IconComponent = item.icon;
@@ -168,7 +164,6 @@ export const Stack = () => {
                       style={{ '--brand-color': item.iconColor || 'currentColor' } as React.CSSProperties}
                       className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-(--line) bg-(--surface) text-(--text) text-xs font-sans select-none relative transition-all duration-300 group hover:border-(--brand-color) hover:-translate-y-0.5 hover:bg-(--surface-2) hover:shadow-[0_4px_12px_rgba(0,0,0,0.5),0_0_10px_rgba(var(--brand-color),0.15)]"
                     >
-                      {/* Real Indicator Dot node to perfectly expose native browser title tooltip */}
                       {item.isFav && (
                         <div 
                           className="absolute -top-0.75 -right-0.75 w-2 h-2 rounded-full bg-accent shadow-[0_0_0_2px_var(--bg)] cursor-help z-10"
@@ -176,7 +171,6 @@ export const Stack = () => {
                         />
                       )}
 
-                      {/* Uniform Icon Wrapper with hover scale animation */}
                       <span className="inline-flex h-4 w-4 items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
                         <IconComponent 
                           size={15} 

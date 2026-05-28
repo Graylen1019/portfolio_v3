@@ -1,15 +1,15 @@
 import React from "react"
 import { Github } from "./github"
 import { CurrentWork } from "./currently"
+import { CiPaperplane } from "react-icons/ci";
 
 export const Hero = () => {
   return (
     <section className="relative min-h-screen grid grid-cols-1 gap-12 pt-35 pb-20 border-b border-(--line) items-center content-center">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)] gap-12 lg:gap-16 items-end">
 
-        {/* LEFT COLUMN: HERO INTRO & TYPOGRAPHY */}
         <div>
-          {/* Availability Status Badge */}
+
           <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[rgba(134,239,172,0.06)] border border-[rgba(134,239,172,0.18)] font-mono text-xs text-[#bbf7d0] mb-8">
             <span className="relative flex h-2 w-2 rounded-full bg-(--good)">
               <div className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-100 duration-2000 bg-primary" />
@@ -19,13 +19,11 @@ export const Hero = () => {
             </h1>
           </div>
 
-          {/* Big Typography Header Name Space */}
           <h1 className="text-[clamp(56px,9vw,132px)] font-medium leading-[0.92] tracking-tighter mb-7 select-none text-(--text) text-gradient">
             Graylen <span className="font-serif italic font-normal tracking-tight text-gradient">Bigelow</span>
             <span className="block mt-1">~ builds<br />the <span className="font-serif italic font-normal tracking-tight text-gradient">web.</span></span>
           </h1>
 
-          {/* Led Summary with your text gradient effect hook built right in */}
           <p className="text-[clamp(18px,1.6vw,22px)] text-[#c8c8d0] max-w-[58ch] leading-relaxed font-normal">
             Frontend developer focused on{" "}
             <em className="font-normal tacking-tight text-gradient">
@@ -34,7 +32,6 @@ export const Hero = () => {
             . I build practical, fast, and delightful web apps — with care for the small details that make a big difference.
           </p>
 
-          {/* Action Button Links */}
           <div className="flex flex-wrap gap-2.5 mt-10">
             <a
               href="#projects"
@@ -69,21 +66,26 @@ export const Hero = () => {
               </svg>
               LinkedIn
             </a>
+            <a
+              href="/graylen_bigelow_cv.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-(--line) bg-(--surface) text-(--text) text-xs transition-all hover:border-(--line-2) hover:bg-accent hover:-translate-y-0.5 duration-500 hover:text-black"
+            >
+              <CiPaperplane />
+              Resume
+            </a>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: SIDE METRIC CARDS */}
         <aside className="flex flex-col gap-4 w-full max-w-sm lg:max-w-none justify-self-stretch">
 
-          {/* Card 1: Live GitHub Aggregates */}
           <Github />
 
-          {/* Card 2: Status Log */}
           <CurrentWork />
         </aside>
       </div>
 
-      {/* Decorative Scrolling Indicator Cue */}
       <div className="absolute left-1/2 bottom-10 -translate-x-1/2 flex flex-col items-center gap-2 select-none pointer-events-none">
         <span className="text-[10px] tracking-[0.2em] uppercase text-[rgba(148,163,184,0.95)]">Scroll</span>
         <div className="relative mt-2 w-0.5 h-11 overflow-hidden rounded-full bg-[rgba(34,211,238,0.14)]">

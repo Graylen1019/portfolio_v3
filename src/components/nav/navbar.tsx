@@ -20,29 +20,22 @@ export const Navbar = () => {
         isScrolled ? "backdrop-blur-md" : "bg-transparent"
       }`}
     >
-      {/* This wrapper is the direct fix. 
-        px-[var(--pad)] grabs your original fluid padding from globals.css.
-        max-w-[1200px] mx-auto forces the navbar layout to snap right into line with the sections below.
-      */}
       <div className="w-full mx-auto px-(--pad) flex items-center justify-between h-20">
         
-        {/* Brand Identity */}
         <Link href="/" className="flex items-center gap-2.5 font-mono text-[13px] tracking-wide text-foreground">
           <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
           Graylen Bigelow / Frontend Developer
         </Link>
 
-        {/* Center Anchored Links */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-muted">
-          <Link href="/about" className="hover:text-foreground transition-colors">01 About</Link>
+          <Link href="#about" className="hover:text-foreground transition-colors">01 About</Link>
           <Link href="/work" className="hover:text-foreground transition-colors">02 Work</Link>
-          <Link href="/stack" className="hover:text-foreground transition-colors">03 Stack</Link>
+          <Link href="#stack" className="hover:text-foreground transition-colors">03 Stack</Link>
           <Link href="/projects" className="hover:text-foreground transition-colors">04 Projects</Link>
         </nav>
 
-        {/* Contact CTA */}
         <Link
-          href="/contact" 
+          href="#contact" 
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-foreground text-background text-xs font-medium transition-transform hover:-translate-y-0.5"
         >
           {/* Scalable Vector Graphics matching original email envelope badge profile asset */}

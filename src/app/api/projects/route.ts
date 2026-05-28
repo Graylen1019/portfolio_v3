@@ -29,7 +29,6 @@ export async function GET() {
     const username = "graylen1019"; 
     const token = process.env.GITHUB_TOKEN;
     
-    // Exact repository sequence array (Deterministic ordering)
     const allowedProjects = [
       "My-Portfolio",
       "NewTube",
@@ -56,29 +55,22 @@ export async function GET() {
     const reposTyped = repos as Repo[];
 
     const mappedProjects = reposTyped
-      // 1. Structural Filter: Matches whitelist configuration
       .filter((repo: Repo) => allowedProjects.includes(repo.name))
-      // 2. Map Deterministic Sorting Order
       .sort((a: Repo, b: Repo) => allowedProjects.indexOf(a.name) - allowedProjects.indexOf(b.name))
-      // 3. Transformation Processor Module
       .map((repo: Repo) => {
         const createdYear = repo.created_at ? new Date(repo.created_at).getFullYear() : 2026;
         
-        // Extract exact last code push cycle
         const lastCommitDate = repo.pushed_at 
           ? new Date(repo.pushed_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })
           : null;
 
-        // Dynamically compute absolute repository weight
         const projectScale = repo.size > 1024 
           ? `${(repo.size / 1024).toFixed(1)} MB` 
           : `${repo.size} KB`;
 
-        // Compose robust metadata statuses
         const statusLabel = repo.archived ? "ARCHIVED" : "ACTIVE";
         const licenseLabel = repo.license?.spdx_id ? repo.license.spdx_id : "SELECTED";
 
-        // Map Title string casing mutations
         const cleanTitle = repo.name === "portfolio_v3" 
           ? "Portfolio v3" 
           : repo.name.replace(/[-_]/g, " ");
@@ -86,7 +78,6 @@ export async function GET() {
         const mainLanguage = repo.language ? [repo.language] : [];
         const topics = repo.topics ? repo.topics.map((t) => t.charAt(0).toUpperCase() + t.slice(1)) : [];
         
-        // Construct dynamic metadata tags cluster
         const trackingTags = [
           ...mainLanguage,
           ...topics,
