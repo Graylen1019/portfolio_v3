@@ -14,25 +14,11 @@ export async function GET() {
   }
 
   try {
-    const accountCreatedRes = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`,
-      },
-      body: JSON.stringify({
-        query: `query($login: String!) { user(login: $login) { createdAt } }`,
-        variables: { login: GITHUB_USERNAME },
-      }),
-      next: { revalidate: 3600 },
-    });
-
-    const accountJson = await accountCreatedRes.json();
-    const createdAt = new Date(accountJson.data.user.createdAt);
     const now = new Date();
+    const startYear = 2025;
 
     const years: number[] = [];
-    for (let y = createdAt.getFullYear(); y <= now.getFullYear(); y++) {
+    for (let y = startYear; y <= now.getFullYear(); y++) {
       years.push(y);
     }
 
@@ -42,14 +28,19 @@ export async function GET() {
           user(login: $login) {
             contributionsCollection(from: $from, to: $to) {
               totalCommitContributions
+              restrictedContributionsCount
             }
           }
         }
       `,
       variables: {
         login: GITHUB_USERNAME,
-        from: `${year}-01-01T00:00:00Z`,
-        to: `${Math.min(year + 1, now.getFullYear())}-01-01T00:00:00Z`,
+        from: year === startYear
+          ? `${startYear}-03-03T00:00:00Z`
+          : `${year}-01-01T00:00:00Z`,
+        to: year === now.getFullYear()
+          ? now.toISOString()
+          : `${year + 1}-01-01T00:00:00Z`,
       },
     }));
 
@@ -109,7 +100,10 @@ export async function GET() {
     ]);
 
     const totalCommits = commitResults.reduce(
-      (sum, r) => sum + (r.data?.user?.contributionsCollection?.totalCommitContributions ?? 0),
+      (sum, r) => {
+        const collection = r.data?.user?.contributionsCollection;
+        return sum + (collection?.totalCommitContributions ?? 0) + (collection?.restrictedContributionsCount ?? 0);
+      },
       0
     );
 

@@ -35,7 +35,7 @@ export const Navbar = () => {
         {/* Center Anchored Links */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-muted">
           <Link href="/about" className="hover:text-foreground transition-colors">01 About</Link>
-          <Link href="/experience" className="hover:text-foreground transition-colors">02 Work</Link>
+          <Link href="/work" className="hover:text-foreground transition-colors">02 Work</Link>
           <Link href="/stack" className="hover:text-foreground transition-colors">03 Stack</Link>
           <Link href="/projects" className="hover:text-foreground transition-colors">04 Projects</Link>
         </nav>

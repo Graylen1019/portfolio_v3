@@ -85,7 +85,7 @@ export const Github = () => {
             <div className="flex justify-between items-baseline py-2.5 border-t border-dashed border-(--line)">
                 <div className="text-sm text-(--muted) flex items-center gap-2">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 opacity-70"><circle cx="12" cy="12" r="3" /><path d="M3 12h6M15 12h6" /></svg>
-                    Commits (90d)
+                    Commits
                 </div>
                 <div className="font-mono text-2xl font-medium text-(--text) tracking-tight">
                     {loading ? (

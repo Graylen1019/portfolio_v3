@@ -1,8 +1,9 @@
-const WorkPage = ({ params }: { params: { work: string } }) => {
-  const { work } = params;  
+import { Experience } from "@/components/works/works";
+
+const WorkPage = () => {
 
     return (
-        <h1>{work}</h1>
+        <Experience />
     );
 };
 
