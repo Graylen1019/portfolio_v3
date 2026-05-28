@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { projectMeta } from "@/app/data/projects";
 
-// Comprehensive strict schema typing for GitHub API repository payload response
 type GitHubLicense = {
   key: string;
   name: string;
@@ -24,77 +24,74 @@ type Repo = {
   license?: GitHubLicense | null;
 };
 
+const allowedProjects = [
+  "My-Portfolio",
+  "NewTube",
+  "skinstric.ai",
+  "solid-docs",
+  "OMDB-movie-api",
+];
+
 export async function GET() {
   try {
-    const username = "graylen1019"; 
+    const username = "graylen1019";
     const token = process.env.GITHUB_TOKEN;
-    
-    const allowedProjects = [
-      "My-Portfolio",
-      "NewTube",
-      "skinstric.ai",
-      "solid-docs",
-      "OMDB-movie-api",
-    ];
 
-    const url = `https://api.github.com/users/${username}/repos?per_page=100`;
-    
-    const res = await fetch(url, {
+    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
       headers: {
         Accept: "application/vnd.github.v3+json",
-        ...(token ? { Authorization: `token ${token}` } : {})
+        ...(token ? { Authorization: `token ${token}` } : {}),
       },
-      next: { revalidate: 60 } // Sync update interval cached at edge server
+      next: { revalidate: 3600 },
     });
 
     if (!res.ok) {
       return NextResponse.json({ error: "Failed fetch from GitHub" }, { status: res.status });
     }
-    
-    const repos = await res.json();
-    const reposTyped = repos as Repo[];
 
-    const mappedProjects = reposTyped
-      .filter((repo: Repo) => allowedProjects.includes(repo.name))
-      .sort((a: Repo, b: Repo) => allowedProjects.indexOf(a.name) - allowedProjects.indexOf(b.name))
-      .map((repo: Repo) => {
+    const repos = (await res.json()) as Repo[];
+
+    const mappedProjects = repos
+      .filter((repo) => allowedProjects.includes(repo.name))
+      .sort((a, b) => allowedProjects.indexOf(a.name) - allowedProjects.indexOf(b.name))
+      .map((repo) => {
+        const meta = projectMeta[repo.name];
+
         const createdYear = repo.created_at ? new Date(repo.created_at).getFullYear() : 2026;
-        
-        const lastCommitDate = repo.pushed_at 
+        const lastCommitDate = repo.pushed_at
           ? new Date(repo.pushed_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })
           : null;
-
-        const projectScale = repo.size > 1024 
-          ? `${(repo.size / 1024).toFixed(1)} MB` 
+        const projectScale = repo.size > 1024
+          ? `${(repo.size / 1024).toFixed(1)} MB`
           : `${repo.size} KB`;
-
         const statusLabel = repo.archived ? "ARCHIVED" : "ACTIVE";
-        const licenseLabel = repo.license?.spdx_id ? repo.license.spdx_id : "SELECTED";
-
-        const cleanTitle = repo.name === "portfolio_v3" 
-          ? "Portfolio v3" 
+        const licenseLabel = repo.license?.spdx_id ?? "SELECTED";
+        const cleanTitle = repo.name === "portfolio_v3"
+          ? "Portfolio v3"
           : repo.name.replace(/[-_]/g, " ");
-
         const mainLanguage = repo.language ? [repo.language] : [];
-        const topics = repo.topics ? repo.topics.map((t) => t.charAt(0).toUpperCase() + t.slice(1)) : [];
-        
+        const topics = repo.topics
+          ? repo.topics.map((t) => t.charAt(0).toUpperCase() + t.slice(1))
+          : [];
         const trackingTags = [
           ...mainLanguage,
           ...topics,
           projectScale,
           repo.stargazers_count > 0 ? `★ ${repo.stargazers_count}` : null,
-          lastCommitDate ? `Pushed ${lastCommitDate}` : null
-        ].filter((tag): tag is string => Boolean(tag)); // Cleanly strips out missing metric nodes
+          lastCommitDate ? `Pushed ${lastCommitDate}` : null,
+        ].filter((tag): tag is string => Boolean(tag));
 
         return {
-          url: repo.homepage || repo.html_url, 
+          url: repo.homepage || repo.html_url,
           githubUrl: repo.html_url,
           title: cleanTitle,
           sub: `${createdYear} · ${statusLabel} · ${licenseLabel}`,
           desc: repo.description || "Explore the source repository and documentation directly on GitHub.",
           tags: trackingTags.slice(0, 5),
           initials: repo.name.replace(/[-_]/g, "").slice(0, 2).toUpperCase(),
-          image: `/projects/${repo.name}.png`
+          image: `/projects/${repo.name}.png`,
+          stack: meta?.stack ?? [],
+          challenges: meta?.challenges ?? [],
         };
       });
 

@@ -1,8 +1,29 @@
-export const projectDetails: Record<string, {
+export const projectMeta: Record<string, {
   stack: { name: string; reason: string }[];
   challenges: { title: string; problem: string; solution: string }[];
 }> = {
-  "newtube": {
+  "My-Portfolio": {
+    stack: [
+      { name: "Next.js", reason: "App Router for fast page loads, dynamic routes, and serverless API handlers." },
+      { name: "React", reason: "Component-driven architecture with clear folder separation for maintainability." },
+      { name: "TypeScript", reason: "Type safety across components, API routes, and GitHub data structures." },
+      { name: "Tailwind CSS", reason: "Scoped, utility-first styling without the overhead of a CSS-in-JS solution." },
+      { name: "Vercel", reason: "Zero-config deployment with ISR support and edge caching for API routes." },
+    ],
+    challenges: [
+      {
+        title: "GitHub API load time",
+        problem: "Fetching repo stats and commit counts with multiple sequential GraphQL requests was causing load times over 1600ms.",
+        solution: "Merged parallel queries into a single GraphQL request and applied Next.js fetch-level caching, bringing warm request times under 100ms.",
+      },
+      {
+        title: "Accurate all-time commit count",
+        problem: "GitHub's contributionsCollection is capped to a one-year window, making all-time totals impossible with a single query.",
+        solution: "Fanned out one query per year since account creation, ran them in parallel with Promise.all, and summed the results including private contributions via restrictedContributionsCount.",
+      },
+    ],
+  },
+  "NewTube": {
     stack: [
       { name: "Next.js 15", reason: "App Router with server components and server actions for a fast, modern full-stack architecture." },
       { name: "React 19", reason: "Latest concurrent features and improved hydration for a snappy, responsive UI." },
@@ -13,7 +34,6 @@ export const projectDetails: Record<string, {
       { name: "Clerk", reason: "Drop-in authentication handling auth state, sessions, and user management out of the box." },
       { name: "Mux", reason: "Handles video upload, transcoding, adaptive streaming, and delivery infrastructure." },
       { name: "Upstash", reason: "Serverless Redis for background job queuing and automated workflow triggers." },
-      { name: "Radix UI", reason: "Unstyled, accessible primitives that pair with Tailwind without fighting component opinions." },
       { name: "Tailwind CSS", reason: "Utility-first styling for rapid iteration and a consistent design language." },
     ],
     challenges: [
@@ -34,13 +54,14 @@ export const projectDetails: Record<string, {
       },
     ],
   },
-
   "skinstric.ai": {
     stack: [
       { name: "Next.js", reason: "App Router for server-side rendering and clean file-based routing." },
       { name: "React", reason: "Component-driven UI for building the image upload flow and results dashboard." },
       { name: "TypeScript", reason: "Type safety across API responses and demographic data structures." },
       { name: "OpenAI Vision API", reason: "Core AI engine — analyzes facial features to estimate age, sex, and ethnicity from uploaded images." },
+      { name: "GSAP", reason: "Bespoke animations for the analysis flow and results reveal." },
+      { name: "Lottie", reason: "Lightweight animation format used to keep time-to-analysis under 2 seconds." },
       { name: "Tailwind CSS", reason: "Responsive, clean UI built rapidly with utility classes." },
     ],
     challenges: [
@@ -56,7 +77,6 @@ export const projectDetails: Record<string, {
       },
     ],
   },
-
   "solid-docs": {
     stack: [
       { name: "Next.js 15", reason: "App Router and server actions power the document management and routing layer." },
@@ -85,7 +105,6 @@ export const projectDetails: Record<string, {
       },
     ],
   },
-
   "omdb-movie-api": {
     stack: [
       { name: "Next.js 15", reason: "App Router with Suspense for handling async URL search params and streaming." },
@@ -104,28 +123,6 @@ export const projectDetails: Record<string, {
         title: "Performant client-side sorting",
         problem: "Re-sorting a large results list on every render caused unnecessary recalculations and sluggish interactions.",
         solution: "Used useMemo to memoize sorted results, recomputing only when the dataset or sort order changes — keeping interactions instant regardless of result size.",
-      },
-    ],
-  },
-
-  "my-portfolio": {
-    stack: [
-      { name: "Next.js", reason: "App Router for fast page loads, dynamic routes, and serverless API handlers." },
-      { name: "React", reason: "Component-driven architecture with clear folder separation for maintainability." },
-      { name: "TypeScript", reason: "Type safety across components, API routes, and GitHub data structures." },
-      { name: "Tailwind CSS", reason: "Scoped, utility-first styling without the overhead of a CSS-in-JS solution." },
-      { name: "Vercel", reason: "Zero-config deployment with ISR support and edge caching for API routes." },
-    ],
-    challenges: [
-      {
-        title: "GitHub API load time",
-        problem: "Fetching repo stats and commit counts with multiple sequential GraphQL requests was causing load times over 1600ms.",
-        solution: "Merged parallel queries into a single GraphQL request and applied Next.js fetch-level caching, bringing warm request times under 100ms.",
-      },
-      {
-        title: "Accurate all-time commit count",
-        problem: "GitHub's contributionsCollection is capped to a one-year window, making all-time totals impossible with a single query.",
-        solution: "Fanned out one query per year since account creation, ran them in parallel with Promise.all, and summed the results including private contributions via restrictedContributionsCount.",
       },
     ],
   },
