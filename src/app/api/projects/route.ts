@@ -39,14 +39,24 @@ export async function GET() {
 
     const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
       headers: {
-        Accept: "application/vnd.github.v3+json",
-        ...(token ? { Authorization: `token ${token}` } : {}),
+        "Accept": "application/vnd.github.v3+json",
+        // Enforce User-Agent header (Strictly required by GitHub API on production servers)
+        "User-Agent": "graylen1019-portfolio-app",
+        // Explicitly declare the GitHub API version as recommended by GitHub
+        "X-GitHub-Api-Version": "2022-11-28",
+        // Authenticate using standard Bearer schema if token is present
+        ...(token ? { "Authorization": `Bearer ${token}` } : {}),
       },
       next: { revalidate: 3600 },
     });
 
     if (!res.ok) {
-      return NextResponse.json({ error: "Failed fetch from GitHub" }, { status: res.status });
+      // Server-side console log so you can inspect deployment logs (Vercel, Netlify, etc.)
+      console.error(`GitHub API responded with status: ${res.status} (${res.statusText})`);
+      return NextResponse.json(
+        { error: `Failed fetch from GitHub: ${res.statusText}` }, 
+        { status: res.status }
+      );
     }
 
     const repos = (await res.json()) as Repo[];
@@ -97,6 +107,7 @@ export async function GET() {
 
     return NextResponse.json(mappedProjects);
   } catch (error) {
+    console.error("Internal Route Handler Error:", error);
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

@@ -7,6 +7,7 @@ const TOKEN = process.env.GITHUB_TOKEN;
 
 export async function GET() {
   if (!TOKEN) {
+    console.warn("⚠️ GitHub Token is missing from environment variables.");
     return NextResponse.json(
       { error: "GitHub token is missing", publicRepos: "?", totalCommits: "?", repos: [] },
       { status: 200 }
@@ -44,25 +45,37 @@ export async function GET() {
       },
     }));
 
+    // Common headers required across all production servers calling GitHub's API
+    const baseHeaders = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${TOKEN}`,
+      // Enforce User-Agent header (Strictly required by GitHub API on production servers)
+      "User-Agent": "graylen1019-portfolio-app",
+      // Declare explicit GitHub API versioning 
+      "X-GitHub-Api-Version": "2022-11-28"
+    };
+
     const [commitResults, mainRes] = await Promise.all([
       Promise.all(
         commitQueries.map((body) =>
           fetch("https://api.github.com/graphql", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${TOKEN}`,
-            },
+            headers: baseHeaders,
             body: JSON.stringify(body),
             next: { revalidate: 3600 },
-          }).then((r) => r.json())
+          }).then(async (r) => {
+            if (!r.ok) {
+              console.error(`Commit fetch failed with status: ${r.status}`);
+              return {};
+            }
+            return r.json();
+          })
         )
       ),
       fetch("https://api.github.com/graphql", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${TOKEN}`,
+          ...baseHeaders,
           "Cache-Control": "s-maxage=3600",
         },
         body: JSON.stringify({
@@ -101,14 +114,22 @@ export async function GET() {
 
     const totalCommits = commitResults.reduce(
       (sum, r) => {
-        const collection = r.data?.user?.contributionsCollection;
+        const collection = r?.data?.user?.contributionsCollection;
         return sum + (collection?.totalCommitContributions ?? 0) + (collection?.restrictedContributionsCount ?? 0);
       },
       0
     );
 
+    if (!mainRes.ok) {
+      console.error(`Main GraphQL response returned HTTP error status: ${mainRes.status}`);
+      throw new Error(`GitHub GraphQL HTTP error status: ${mainRes.status}`);
+    }
+
     const json = await mainRes.json();
-    if (json.errors) throw new Error("GraphQL errors: " + JSON.stringify(json.errors));
+    if (json.errors) {
+      console.error("GraphQL payload contains validation errors:", JSON.stringify(json.errors));
+      throw new Error("GraphQL errors: " + JSON.stringify(json.errors));
+    }
 
     const user = json.data?.user;
 
@@ -134,9 +155,15 @@ export async function GET() {
     });
 
   } catch (err) {
-    console.error("GitHub fetch failed", err);
+    console.error("Fatal deployment fallback triggered:", err);
     return NextResponse.json(
-      { error: "Failed to fetch GitHub stats", publicRepos: "?", totalCommits: "?", repos: [], lastUpdated: new Date().toISOString() },
+      { 
+        error: "Failed to fetch GitHub stats", 
+        publicRepos: "?", 
+        totalCommits: "?", 
+        repos: [], 
+        lastUpdated: new Date().toISOString() 
+      },
       { status: 500 }
     );
   }
