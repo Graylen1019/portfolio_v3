@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { experience } from "@/app/data/works";
 
 export const Experience = () => {
@@ -18,9 +17,8 @@ export const Experience = () => {
 
       <div className="flex flex-col gap-0">
         {experience.map((job) => (
-          <Link
+          <div
             key={job.slug}
-            href={`/work/${job.slug}`}
             className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-12 py-9 border-t border-(--line) first:border-none group relative no-underline hover:bg-(--surface) transition-colors duration-200 rounded-xl px-4 -mx-4"
           >
             <div className="flex flex-col gap-1.5 pt-1 font-sans">
@@ -58,7 +56,7 @@ export const Experience = () => {
                 ))}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </section>
