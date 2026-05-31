@@ -1,6 +1,7 @@
-// app/layout.tsx
 import { Space_Grotesk, Outfit } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Headings: Sharp, techy, bold
 const spaceGrotesk = Space_Grotesk({
@@ -19,6 +20,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
       <body className="antialiased">
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
